@@ -3,7 +3,7 @@ import socket
 import json
 import multiprocessing
 from datetime import datetime
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -15,7 +15,8 @@ MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
 MONGO_DB = os.getenv("MONGO_DB", "message_db")
 WEBSOCKET_PORT = 5000
 
-# HTTP server setup
+
+# HTTP сервер встановлення
 class CustomHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/':
@@ -40,7 +41,7 @@ class CustomHandler(SimpleHTTPRequestHandler):
                 "message": data["message"][0]
             }
 
-            # Send data to the socket server
+            # Відправлення даних на socket сервер
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
                 sock.connect(('localhost', 5000))
                 sock.sendall(json.dumps(message).encode('utf-8'))
@@ -50,14 +51,16 @@ class CustomHandler(SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'Message submitted')
 
+
 def run_http_server():
     server_address = ('', 3000)
     httpd = HTTPServer(server_address, CustomHandler)
     print("HTTP Server running on port 3000...")
     httpd.serve_forever()
 
+
 def run_socket_server():
-    # MongoDB setup
+    # MongoDB встановлення
     client = MongoClient(MONGO_URI)
     db = client[MONGO_DB]
     messages_collection = db['messages']
@@ -77,6 +80,7 @@ def run_socket_server():
                     message = json.loads(data.decode('utf-8'))
                     messages_collection.insert_one(message)
                     print(f"Message saved: {message}")
+
 
 if __name__ == '__main__':
     p1 = multiprocessing.Process(target=run_http_server)
