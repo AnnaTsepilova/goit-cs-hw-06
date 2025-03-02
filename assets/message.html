@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}Send message{% endblock %}
+{% block content %}
+<div class="container mt-3">
+  <main class="form-signin w-50 m-auto">
+    <form action="/message" method="POST">
+      <h1 class="h3 mb-3 fw-normal">Please send me message</h1>
+
+      <div class="row mb-3">
+        <label for="floatingInput">Your nickname</label>
+        <input type="text" class="form-control" id="floatingInput" name="username"/>
+      </div>
+
+      <div class="row mb-3 h-100">
+        <label for="floatingTextarea">Message</label>
+        <textarea class="form-control" id="floatingTextarea" name="message"></textarea>
+      </div>
+
+      <button class="w-100 btn btn-lg btn-primary" type="submit">
+        Send
+      </button>
+    </form>
+  </main>
+</div>
+{% endblock %}

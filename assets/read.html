@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Read messages{% endblock %}
+{% block content %}
+<div class="container mt-3">
+    <main class="form-signin w-50 m-auto">
+        <h1 class="h3 mb-3 fw-normal">Stored messages</h1>
+
+        <ul>
+            {% for date, msg in messages.items() %}
+            <li><b>{{ date }}</b><br>{{ msg.username }} - {{ msg.message }}</li>
+            {% endfor %}
+        </ul>
+    </main>
+</div>
+{% endblock %}
